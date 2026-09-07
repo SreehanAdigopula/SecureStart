@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="SecureStart helps small organizations assess basic cybersecurity habits, calculate a risk score, and get practical next steps."
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'"
+    />
+    <title>SecureStart | Cybersecurity Readiness</title>
+    <link rel="icon" href="assets/securestart-logo.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="assets/securestart-logo.svg" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-noise" aria-hidden="true"></div>
+    <div class="scanlines" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand" href="#home" aria-label="SecureStart home">
+        <img class="brand-mark" src="assets/securestart-logo.svg" alt="" aria-hidden="true" />
+        <span>SecureStart</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#assessment">Assessment</a>
+        <a href="#saved">Saved</a>
+        <a href="#resources">Resources</a>
+      </nav>
+      <a class="button button-small" href="#assessment">Start Assessment</a>
+    </header>
+
+    <main id="home">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Small org security console</p>
+          <h1 class="glitch" data-text="Know Your Risk">Know Your Risk</h1>
+          <p class="hero-text">
+            A practical cybersecurity readiness check for clubs, nonprofits, and local teams.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#assessment">Start Assessment</a>
+            <a class="button button-secondary" href="#resources">Open Resources</a>
+          </div>
+        </div>
+        <aside class="hero-preview cyber-panel" aria-label="SecureStart result preview">
+          <div class="preview-topline">
+            <span>Readiness report</span>
+            <span>Self-reported</span>
+          </div>
+          <div class="preview-score">
+            <strong>37</strong>
+            <span>/100 normalized risk</span>
+          </div>
+          <div class="preview-scale" aria-hidden="true">
+            <span class="preview-fill"></span>
+          </div>
+          <div class="preview-label risk-label risk-moderate">Moderate Risk</div>
+          <div class="preview-grid">
+            <div><strong>Accounts</strong><span>42</span></div>
+            <div><strong>Access</strong><span>33</span></div>
+            <div><strong>Data</strong><span>50</span></div>
+            <div><strong>Recovery</strong><span>22</span></div>
+          </div>
+          <div class="preview-actions">
+            <p>&gt; top actions</p>
+            <ol>
+              <li>Enable 2FA on key accounts</li>
+              <li>Document admin access</li>
+              <li>Test file backups</li>
+            </ol>
+          </div>
+        </aside>
+      </section>
+
+      <section class="signal-strip" aria-label="SecureStart outcomes">
+        <div>
+          <strong>5</strong>
+          <span>risk areas</span>
+        </div>
+        <div>
+          <strong>0-5</strong>
+          <span>targeted actions</span>
+        </div>
+        <div>
+          <strong>0</strong>
+          <span>sensitive fields</span>
+        </div>
+        <div>
+          <strong>Local</strong>
+          <span>browser storage</span>
+        </div>
+      </section>
+
+      <section class="mission-section">
+        <div class="terminal-card">
+          <div class="terminal-bar" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+          <p class="terminal-line">&gt; mission.load()</p>
+          <h2>Security guidance without jargon.</h2>
+          <p>
+            SecureStart helps non-technical groups find preventable risks like shared logins,
+            missing 2FA, weak backups, unclear domain ownership, and poor recovery planning.
+          </p>
+        </div>
+        <div class="risk-matrix cyber-panel">
+          <h3>Readiness map</h3>
+          <div class="matrix-grid" aria-hidden="true">
+            <span>Accounts</span>
+            <span>Access</span>
+            <span>Data</span>
+            <span>Website</span>
+            <span>Recovery</span>
+            <span>Report</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="app-section" id="assessment">
+        <div class="section-heading">
+          <h2>Run the assessment.</h2>
+          <p>
+            Answer short questions, get a score, then export a basic report your team can act on.
+          </p>
+        </div>
+
+        <div class="app-shell cyber-panel">
+          <aside class="progress-panel" aria-label="Assessment progress">
+            <p class="panel-kicker">SecureStart Console</p>
+            <ol class="step-list" id="stepList">
+              <li class="active" data-step-label="profile">Profile</li>
+              <li data-step-label="checklist">Checklist</li>
+              <li data-step-label="results">Results</li>
+            </ol>
+            <div class="privacy-note">
+              <strong>No sensitive data.</strong>
+              <span>Do not enter passwords, account names, addresses, or payment details.</span>
+            </div>
+          </aside>
+
+          <div class="workflow-panel">
+            <section class="workflow-step active" id="profileStep" aria-labelledby="profileTitle">
+              <p class="terminal-line">&gt; collect.profile()</p>
+              <h3 id="profileTitle">Organization profile</h3>
+              <form id="profileForm" class="form-grid">
+                <label>
+                  <span>Organization name</span>
+                  <input id="orgName" name="orgName" type="text" autocomplete="organization" required />
+                </label>
+                <label>
+                  <span>Organization type</span>
+                  <select id="orgType" name="orgType" required>
+                    <option value="">Choose one</option>
+                    <option>Student club</option>
+                    <option>School organization</option>
+                    <option>Local nonprofit</option>
+                    <option>Small business</option>
+                    <option>Tutoring group</option>
+                    <option>Community organization</option>
+                    <option>Family-run business</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Approximate number of people</span>
+                  <select id="orgSize" name="orgSize" required>
+                    <option value="">Choose one</option>
+                    <option>1-5</option>
+                    <option>6-15</option>
+                    <option>16-50</option>
+                    <option>51-100</option>
+                    <option>100+</option>
+                  </select>
+                </label>
+                <fieldset class="inline-field">
+                  <legend>Does the organization have a website?</legend>
+                  <label><input type="radio" name="hasWebsite" value="yes" required /> Yes</label>
+                  <label><input type="radio" name="hasWebsite" value="no" /> No</label>
+                </fieldset>
+                <label id="websiteField" class="hidden">
+                  <span>Website URL, optional</span>
+                  <input id="websiteUrl" name="websiteUrl" type="url" placeholder="https://example.org" />
+                </label>
+                <fieldset class="inline-field">
+                  <legend>Do you handle customer or member data?</legend>
+                  <label><input type="radio" name="handlesData" value="yes" required /> Yes</label>
+                  <label><input type="radio" name="handlesData" value="no" /> No</label>
+                </fieldset>
+                <button class="button button-primary form-submit" type="submit">Continue</button>
+              </form>
+            </section>
+
+            <section class="workflow-step" id="checklistStep" aria-labelledby="checklistTitle">
+              <p class="terminal-line">&gt; scan.habits()</p>
+              <h3 id="checklistTitle">Cybersecurity checklist</h3>
+              <p class="step-help">
+                Pick the answer that best describes your current habits. It is fine if the answer is
+                "not sure."
+              </p>
+              <form id="checklistForm">
+                <div id="questionGroups" class="question-groups"></div>
+                <div class="form-actions">
+                  <button class="button button-secondary" type="button" id="backToProfile">Back</button>
+                  <button class="button button-primary" type="submit">View Results</button>
+                </div>
+              </form>
+            </section>
+
+            <section class="workflow-step" id="resultsStep" aria-labelledby="resultsTitle">
+              <p class="terminal-line">&gt; report.compile()</p>
+              <h3 id="resultsTitle">Results dashboard</h3>
+              <div id="resultsContent" class="results-content"></div>
+              <div class="form-actions">
+                <button class="button button-secondary" type="button" id="retakeButton">Retake</button>
+                <button class="button button-primary" type="button" id="downloadReport">Download Report</button>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section class="saved-section" id="saved">
+        <div class="section-heading">
+          <h2>Saved reports.</h2>
+          <p>Assessments stay on this device. Review prior scores or clear local history.</p>
+          <button class="button button-secondary button-small" type="button" id="clearHistory">Clear History</button>
+        </div>
+        <div class="saved-grid" id="savedAssessments"></div>
+      </section>
+
+      <section class="resources-section" id="resources">
+        <div class="section-heading">
+          <h2>Fix the highest-risk basics first.</h2>
+          <p>Each resource is written for people who do not live in cybersecurity tools.</p>
+        </div>
+        <div class="resource-grid">
+          <article class="resource-card cyber-panel">
+            <h3>2FA setup guide</h3>
+            <p>Add a second verification step to email, website, payment, and file accounts.</p>
+            <button class="button button-secondary button-small" type="button" data-resource="twoFactor">Open Guide</button>
+          </article>
+          <article class="resource-card cyber-panel">
+            <h3>Access tracker</h3>
+            <p>List who has admin access and remove people who no longer need it.</p>
+            <button class="button button-secondary button-small" type="button" data-resource="accessTracker">Open Template</button>
+          </article>
+          <article class="resource-card cyber-panel">
+            <h3>Backup checklist</h3>
+            <p>Decide what matters, where it is stored, and how often it gets copied.</p>
+            <button class="button button-secondary button-small" type="button" data-resource="backupChecklist">Open Checklist</button>
+          </article>
+          <article class="resource-card cyber-panel">
+            <h3>Incident plan</h3>
+            <p>Write a one-page recovery plan before an account gets hacked.</p>
+            <button class="button button-secondary button-small" type="button" data-resource="incidentPlan">Open Plan</button>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <div class="resource-modal hidden" id="resourceModal" role="dialog" aria-modal="true" aria-labelledby="resourceTitle">
+      <div class="resource-dialog cyber-panel">
+        <button class="modal-close" type="button" id="closeResource" aria-label="Close resource">x</button>
+        <p class="terminal-line">&gt; resource.open()</p>
+        <h2 id="resourceTitle">Resource</h2>
+        <div id="resourceBody" class="resource-body"></div>
+        <div class="form-actions">
+          <button class="button button-primary" type="button" id="downloadResource">Download Template</button>
+          <button class="button button-secondary" type="button" id="closeResourceBottom">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <span>SecureStart</span>
+      <span>Cybersecurity readiness for small organizations.</span>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>

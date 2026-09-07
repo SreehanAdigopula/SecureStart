@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">SecureStart logo</title>
+  <desc id="desc">A neon angular shield with a launch chevron and circuit nodes.</desc>
+  <defs>
+    <linearGradient id="shield" x1="18" y1="16" x2="110" y2="112" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#00ff88"/>
+      <stop offset="0.58" stop-color="#00d4ff"/>
+      <stop offset="1" stop-color="#ff00ff"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0  0 0 0 0 1  0 0 0 0 .55  0 0 0 .85 0" result="greenGlow"/>
+      <feMerge>
+        <feMergeNode in="greenGlow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <path fill="#0a0a0f" d="M0 0h128v128H0z"/>
+  <path fill="#101018" d="M18 20h92v10h10v78h-10v10H18v-10H8V30h10z"/>
+  <path fill="none" stroke="url(#shield)" stroke-width="6" stroke-linejoin="miter" filter="url(#glow)" d="M64 12 106 28v33c0 26-15 45-42 57-27-12-42-31-42-57V28z"/>
+  <path fill="none" stroke="#00ff88" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter" d="M46 72 62 88l25-46"/>
+  <path fill="none" stroke="#00d4ff" stroke-width="4" stroke-linecap="square" d="M42 43h18M68 43h20M40 57h13M77 70h17M50 98h28"/>
+  <path fill="#ff00ff" d="M35 40h8v8h-8zM88 66h8v8h-8zM78 94h8v8h-8z"/>
+  <path fill="#00ff88" d="M57 38h7v7h-7zM47 54h7v7h-7z"/>
+</svg>
