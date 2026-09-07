@@ -956,19 +956,19 @@ function downloadReport(result) {
     .map(([category, score]) => {
       const detail = result.categoryDetails && result.categoryDetails[category];
       const raw = detail ? ` (${safeNumber(detail.raw)}/${safeNumber(detail.max)} raw points${detail.applicable ? "" : ", not counted"})` : "";
-      return `- ${safeText(category)}: ${safeNumber(score)}/100${raw}`;
+      return `- ${safeMarkdownText(category)}: ${safeNumber(score)}/100${raw}`;
     })
     .join("\n");
   const recommendationLines = (Array.isArray(result.recommendations) ? result.recommendations : [])
-    .map((item) => `- ${safeText(item.title)} (${safeText(item.priority)}, ${safeText(item.difficulty)}): ${safeText(item.explanation)}`)
+    .map((item) => `- ${safeMarkdownText(item.title)} (${safeMarkdownText(item.priority)}, ${safeMarkdownText(item.difficulty)}): ${safeMarkdownText(item.explanation)}`)
     .join("\n");
-  const profileLines = (result.profileInsights || []).map((insight) => `- ${safeText(insight)}`).join("\n");
+  const profileLines = (result.profileInsights || []).map((insight) => `- ${safeMarkdownText(insight)}`).join("\n");
 
   const report = `# SecureStart Report
 
-Organization: ${safeText(organization.name || "Organization")}
-Type: ${safeText(organization.type || "Unknown")}
-People: ${safeText(organization.size || "Unknown")}
+Organization: ${safeMarkdownText(organization.name || "Organization")}
+Type: ${safeMarkdownText(organization.type || "Unknown")}
+People: ${safeMarkdownText(organization.size || "Unknown")}
 Website included: ${organization.hasWebsite ? "Yes" : "No"}
 Handles customer or member data: ${organization.handlesSensitiveData ? "Yes" : "No"}
 Date: ${new Date(result.createdAt).toLocaleDateString()}
@@ -977,7 +977,7 @@ Risk score: ${safeNumber(result.totalScore)}/100 normalized risk
 Raw checklist points: ${safeNumber(result.rawRiskPoints)}
 Risk level: ${safeRiskLevel(result.riskLevel)}
 
-Scoring note: ${safeText(result.scoringSummary || "This saved report uses the earlier raw-point scoring model.")}
+Scoring note: ${safeMarkdownText(result.scoringSummary || "This saved report uses the earlier raw-point scoring model.")}
 
 ## Profile Context
 ${profileLines || "- No profile-specific notes."}
@@ -1010,6 +1010,10 @@ function slugify(value) {
 
 function safeText(value) {
   return String(value ?? "").replace(/[\u0000-\u001f\u007f]/g, "").slice(0, 500);
+}
+
+function safeMarkdownText(value) {
+  return safeText(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 }
 
 function safeNumber(value) {
