@@ -61,7 +61,7 @@
           <a href="#bands">Score bands</a>
           <a href="#example">Worked example</a>
           <a href="#profile">Profile effects</a>
-          <a href="#sources">Sources by area</a>
+          <a href="#sources">Question sources</a>
           <a href="#limits">Limits</a>
         </nav>
 
@@ -116,7 +116,7 @@
               </tbody>
             </table>
             <p class="policy-callout">
-              These bands are a SecureStart heuristic for prioritizing basic work. NIST, CISA, FTC, and OWASP do not publish or endorse these numeric cutoffs.
+              These bands, the 0 to 3 answer points, and the equal category weights are SecureStart design choices. NIST, FTC, ICANN, and OWASP do not publish or endorse this grading system. Their guidance supports individual security practices, not the accuracy of a numeric result.
             </p>
           </section>
 
@@ -147,45 +147,35 @@
           </section>
 
           <section id="sources">
-            <h2>Sources by assessment area</h2>
+            <h2>Sources for each question</h2>
             <p>
-              The cited sources support the security practices being checked. They do not validate SecureStart's numeric formula or score bands.
+              Each link opens a specific guidance document or article, not an agency homepage. The linked sections support why a practice is worth checking. No source supplies SecureStart's points, weights, bands, or a validated prediction of risk.
             </p>
             <table>
               <thead>
-                <tr><th scope="col">Area</th><th scope="col">Practices checked</th><th scope="col">Primary guidance</th></tr>
+                <tr><th scope="col">Assessment question</th><th scope="col">Relevant guidance</th></tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Account Security</td>
-                  <td>MFA, unique accounts, password managers, and avoiding password reuse</td>
-                  <td><a href="https://www.cisa.gov/secure-our-world" rel="external noreferrer">CISA Secure Our World</a> and <a href="https://www.cisa.gov/audiences/small-and-medium-businesses/secure-your-business/require-multifactor-authentication" rel="external noreferrer">CISA MFA guidance</a></td>
-                </tr>
-                <tr>
-                  <td>Access Control</td>
-                  <td>Admin inventory, removing old access, and least privilege</td>
-                  <td><a href="https://www.nist.gov/publications/nist-cybersecurity-framework-20-small-business-quick-start-guide" rel="external noreferrer">NIST CSF 2.0 Small Business Quick-Start Guide</a></td>
-                </tr>
-                <tr>
-                  <td>Data Protection</td>
-                  <td>Data minimization, storage awareness, backups, and need-to-know access</td>
-                  <td><a href="https://www.ftc.gov/business-guidance/small-businesses/cybersecurity" rel="external noreferrer">FTC Cybersecurity for Small Business</a> and the NIST guide above</td>
-                </tr>
-                <tr>
-                  <td>Devices and Updates</td>
-                  <td>Automatic updates, device locks, and phishing reporting</td>
-                  <td><a href="https://www.cisa.gov/secure-our-world" rel="external noreferrer">CISA Secure Our World</a> and <a href="https://www.ftc.gov/business-guidance/small-businesses/cybersecurity" rel="external noreferrer">FTC small-business guidance</a></td>
-                </tr>
-                <tr>
-                  <td>Website and Domain Safety</td>
-                  <td>Domain ownership, HTTPS, and authorized website editors</td>
-                  <td><a href="https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Security_Cheat_Sheet.html" rel="external noreferrer">OWASP Transport Layer Security Cheat Sheet</a> and the NIST guide above</td>
-                </tr>
-                <tr>
-                  <td>Incident Readiness</td>
-                  <td>Response planning, account recovery, backup codes, and authorized recovery roles</td>
-                  <td><a href="https://www.nist.gov/publications/nist-cybersecurity-framework-20-small-business-quick-start-guide" rel="external noreferrer">NIST CSF 2.0 Small Business Quick-Start Guide</a> and <a href="https://www.ftc.gov/business-guidance/small-businesses/cybersecurity" rel="external noreferrer">FTC small-business guidance</a></td>
-                </tr>
+                <tr><td>Two-factor authentication</td><td><a href="https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=957322#page=5" rel="external noreferrer">NIST SP 1300, Protect section (PDF)</a> recommends MFA for business accounts.</td></tr>
+                <tr><td>Separate accounts</td><td><a href="https://www.ftc.gov/business-guidance/resources/protecting-personal-information-guide-business" rel="external noreferrer">FTC: Protecting Personal Information</a> advises against sharing employee passwords.</td></tr>
+                <tr><td>Password manager</td><td><a href="https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=957322#page=5" rel="external noreferrer">NIST SP 1300, Protect section (PDF)</a> recommends considering password managers.</td></tr>
+                <tr><td>Password reuse</td><td><a href="https://www.ftc.gov/business-guidance/blog/2018/12/cybersecurity-small-business-tech-support-scams" rel="external noreferrer">FTC: Tech Support Scams for Small Business</a> recommends unique passwords for each account.</td></tr>
+                <tr><td>Admin access list</td><td><a href="https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=957322#page=4" rel="external noreferrer">NIST SP 1300, Identify section (PDF)</a> includes an asset inventory with an administrator or owner.</td></tr>
+                <tr><td>Removing former users' access</td><td><a href="https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=957322#page=5" rel="external noreferrer">NIST SP 1300, Protect section (PDF)</a> asks whether access is removed when no longer needed.</td></tr>
+                <tr><td>Limiting admin permissions</td><td><a href="https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=957322#page=5" rel="external noreferrer">NIST SP 1300, Protect section (PDF)</a> recommends restricting access and privileges to those who need them.</td></tr>
+                <tr><td>Data minimization and deletion plan</td><td><a href="https://www.ftc.gov/business-guidance/resources/protecting-personal-information-guide-business" rel="external noreferrer">FTC: Scale Down and Pitch It</a> advises keeping only needed data and planning secure disposal.</td></tr>
+                <tr><td>Knowing where data is stored</td><td><a href="https://www.ftc.gov/business-guidance/resources/protecting-personal-information-guide-business" rel="external noreferrer">FTC: Take Stock</a> calls for an inventory of sensitive information and its locations.</td></tr>
+                <tr><td>Backups and testing</td><td><a href="https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=957322#page=5" rel="external noreferrer">NIST SP 1300, Protect section (PDF)</a> recommends regular backups and testing them.</td></tr>
+                <tr><td>Access to sensitive files</td><td><a href="https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=957322#page=5" rel="external noreferrer">NIST SP 1300, Protect section (PDF)</a> recommends need-to-know access to sensitive information.</td></tr>
+                <tr><td>Automatic software updates</td><td><a href="https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=957322#page=5" rel="external noreferrer">NIST SP 1300, Protect section (PDF)</a> recommends patching and enabling automatic updates.</td></tr>
+                <tr><td>Device screen locks</td><td><a href="https://www.ftc.gov/business-guidance/resources/protecting-personal-information-guide-business" rel="external noreferrer">FTC: Authentication</a> recommends password-activated screen locks after inactivity.</td></tr>
+                <tr><td>Phishing recognition and reporting</td><td><a href="https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=957322#page=5" rel="external noreferrer">NIST SP 1300, Protect section (PDF)</a> calls for staff to recognize and report suspicious activity.</td></tr>
+                <tr><td>Domain registrant or manager</td><td><a href="https://www.icann.org/registrants" rel="external noreferrer">ICANN: Information for Domain Name Registrants</a> explains the registrant and registrar roles. A domain registration grants rights to use and manage a name, not permanent ownership.</td></tr>
+                <tr><td>Website HTTPS</td><td><a href="https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Security_Cheat_Sheet.html" rel="external noreferrer">OWASP: Transport Layer Security Cheat Sheet</a> explains HTTPS/TLS protection. It does not cover domain ownership.</td></tr>
+                <tr><td>Website editors</td><td><a href="https://www.ftc.gov/business-guidance/blog/2019/02/cybersecurity-small-business-hiring-web-host" rel="external noreferrer">FTC: Hiring a Web Host</a> asks who can log in and change the site.</td></tr>
+                <tr><td>Plan for a hacked account</td><td><a href="https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=957322#page=7" rel="external noreferrer">NIST SP 1300, Respond section (PDF)</a> recommends an incident plan with named responsibilities.</td></tr>
+                <tr><td>Current recovery methods and stored backup codes</td><td><a href="https://pages.nist.gov/800-63-4/sp800-63b.html#account-recovery" rel="external noreferrer">NIST SP 800-63B, Account Recovery</a> describes recovery methods and securely stored saved recovery codes. Availability depends on the account provider.</td></tr>
+                <tr><td>Documented recovery process for two authorized people</td><td><a href="https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=957322#page=8" rel="external noreferrer">NIST SP 1300, Recover section (PDF)</a> recommends assigning recovery responsibilities. The specific two-person threshold is SecureStart's continuity precaution, not a NIST requirement.</td></tr>
               </tbody>
             </table>
           </section>
@@ -210,7 +200,6 @@
       <nav class="footer-links" aria-label="Trust and policy links">
         <a href="index.html">Home</a>
         <a href="privacy.html">Privacy &amp; data use</a>
-        <a href="https://github.com/SreehanAdigopula/SecureStart" rel="external noreferrer">GitHub</a>
       </nav>
     </footer>
   </body>
