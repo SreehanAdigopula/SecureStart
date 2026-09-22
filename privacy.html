@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="SecureStart Privacy and Data Use Policy explaining local browser storage, report downloads, hosting metadata, user choices, and security limits."
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'none'"
+    />
+    <title>Privacy &amp; Data Use | SecureStart</title>
+    <link rel="icon" href="assets/securestart-logo.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="assets/securestart-logo.svg" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-noise" aria-hidden="true"></div>
+    <div class="scanlines" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="SecureStart home">
+        <img class="brand-mark" src="assets/securestart-logo.svg" alt="" aria-hidden="true" />
+        <span>SecureStart</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#assessment">Assessment</a>
+        <a href="methodology.html">Scoring</a>
+        <a href="privacy.html" aria-current="page">Privacy</a>
+      </nav>
+      <a class="button button-small" href="index.html#assessment">Start Assessment</a>
+    </header>
+
+    <main class="policy-main">
+      <section class="policy-hero" aria-labelledby="pageTitle">
+        <div>
+          <p class="eyebrow">Privacy &amp; data use policy</p>
+          <h1 id="pageTitle">Your answers stay local</h1>
+          <p>
+            SecureStart is designed without accounts or a database for assessment answers. This policy explains what the app uses, where it stays, and what the hosting provider may process.
+          </p>
+          <div class="policy-meta">
+            <span>Effective September 22, 2026</span>
+            <span>Last updated September 22, 2026</span>
+          </div>
+        </div>
+        <aside class="policy-summary">
+          <strong>Short version</strong>
+          <p>
+            Assessment details are stored in your browser, not sent to a SecureStart database. Vercel still processes ordinary request information needed to deliver the website.
+          </p>
+        </aside>
+      </section>
+
+      <div class="policy-layout">
+        <nav class="policy-nav" aria-label="Privacy policy sections">
+          <a href="#scope">Scope</a>
+          <a href="#data">Information used</a>
+          <a href="#purpose">Why it is used</a>
+          <a href="#storage">Local storage</a>
+          <a href="#hosting">Hosting data</a>
+          <a href="#sharing">Sharing and sales</a>
+          <a href="#choices">Your choices</a>
+          <a href="#security">Security</a>
+          <a href="#children">Children</a>
+          <a href="#changes">Changes and contact</a>
+        </nav>
+
+        <article class="policy-content">
+          <section id="scope">
+            <h2>1. Scope</h2>
+            <p>
+              This policy applies to the SecureStart website and its browser-based cybersecurity readiness assessment. SecureStart is an educational project for small organizations. It is not an account service, managed security service, professional audit, or compliance platform.
+            </p>
+            <p>
+              The policy describes the current static version of SecureStart. If the app later adds accounts, analytics, a database, website scanning, or another service, this policy must be updated before that feature is released.
+            </p>
+          </section>
+
+          <section id="data">
+            <h2>2. Information the app uses</h2>
+            <h3>Information you enter</h3>
+            <ul>
+              <li>An organization name, nickname, or label.</li>
+              <li>Organization type and approximate size.</li>
+              <li>Whether the organization has a website.</li>
+              <li>Whether the organization handles customer or member data.</li>
+              <li>Answers to the cybersecurity-readiness checklist.</li>
+            </ul>
+
+            <h3>Information created from your answers</h3>
+            <ul>
+              <li>Answer gap points and category scores.</li>
+              <li>The overall Readiness Gap Score and score band.</li>
+              <li>Profile context and recommended next steps.</li>
+              <li>A locally generated report identifier and creation timestamp.</li>
+            </ul>
+
+            <h3>Information SecureStart does not ask for</h3>
+            <p>
+              SecureStart does not ask for passwords, authentication codes, account usernames, home or business addresses, payment-card numbers, bank details, government identifiers, health records, or the contents of private files. Do not enter these details in the organization label or any other field.
+            </p>
+          </section>
+
+          <section id="purpose">
+            <h2>3. Why the information is used</h2>
+            <p>The browser uses the information only to:</p>
+            <ul>
+              <li>Show the applicable checklist questions.</li>
+              <li>Calculate category and overall gap scores.</li>
+              <li>Create relevant explanations and recommendations.</li>
+              <li>Display saved reports in the same browser.</li>
+              <li>Generate a Markdown report when you choose to download one.</li>
+            </ul>
+            <p>
+              The automated score supports an educational recommendation. It is not used to make employment, credit, insurance, housing, legal, or other significant decisions about a person.
+            </p>
+          </section>
+
+          <section id="storage">
+            <h2>4. Local browser storage and retention</h2>
+            <p>
+              SecureStart saves up to eight assessments using the browser's localStorage feature under the key <code>securestart-assessments</code>. This storage belongs to the browser profile and device used for the assessment.
+            </p>
+            <ul>
+              <li>The current app does not send assessment answers to a SecureStart server or database.</li>
+              <li>Saved reports remain until you clear SecureStart history, clear site data, use browser controls to remove storage, or the browser removes it.</li>
+              <li>Private or incognito browsing may delete the reports when the private session ends.</li>
+              <li>Reports do not automatically sync across browsers, devices, or people.</li>
+              <li>Anyone using the same unlocked browser profile may be able to view the saved reports.</li>
+              <li>SecureStart does not separately encrypt localStorage. Device security and browser-profile access still matter.</li>
+            </ul>
+            <p>
+              Downloaded Markdown reports are created locally in the browser. After download, the file is stored wherever your browser or device places downloads and is controlled by you.
+            </p>
+          </section>
+
+          <section id="hosting">
+            <h2>5. Website hosting and technical request data</h2>
+            <p>
+              SecureStart is hosted on Vercel. When you visit the site, Vercel may process ordinary website-delivery and security information such as your IP address, approximate location derived from the IP address, browser and device details, requested pages, timestamps, request information, and service logs.
+            </p>
+            <p>
+              This technical information is separate from the assessment answers stored in localStorage. SecureStart does not include code that places those answers into page URLs or sends them to Vercel as form submissions.
+            </p>
+            <p>
+              Vercel controls its own processing and retention of hosting information. Review <a href="https://vercel.com/legal/privacy-notice" rel="external noreferrer">Vercel's Privacy Notice</a> for its current practices.
+            </p>
+
+            <h3>Cookies, analytics, and advertising</h3>
+            <ul>
+              <li>SecureStart's current code does not set tracking cookies.</li>
+              <li>SecureStart does not use a web-analytics package.</li>
+              <li>SecureStart does not use advertising trackers or behavioral advertising.</li>
+              <li>SecureStart does not create user accounts or use account authentication.</li>
+            </ul>
+          </section>
+
+          <section id="sharing">
+            <h2>6. Sharing, selling, and external links</h2>
+            <p>
+              SecureStart does not sell assessment information. The current app does not transmit assessment answers to the project owner, advertisers, data brokers, or other organizations.
+            </p>
+            <p>
+              The methodology page links to NIST, CISA, FTC, OWASP, Vercel, and GitHub. If you follow an external link, that site receives the request and applies its own privacy policy. SecureStart uses a no-referrer policy intended to avoid sending the SecureStart page address in the browser's referrer header.
+            </p>
+          </section>
+
+          <section id="choices">
+            <h2>7. Your choices and controls</h2>
+            <ul>
+              <li>Use an organization nickname instead of a legal name.</li>
+              <li>Choose not to use the assessment.</li>
+              <li>Select <strong>Clear History</strong> to remove saved assessments from the current browser profile.</li>
+              <li>Use browser settings to clear SecureStart site data.</li>
+              <li>Delete any downloaded report from your device using normal file controls.</li>
+              <li>Avoid using SecureStart on a shared device if other users should not see the report.</li>
+            </ul>
+            <p>
+              Because SecureStart does not receive or maintain assessment answers on a project-owned server, the project owner cannot look up, export, correct, or delete an individual browser's saved assessment. Those controls remain on the user's device.
+            </p>
+          </section>
+
+          <section id="security">
+            <h2>8. Security measures and limits</h2>
+            <p>SecureStart uses measures intended to reduce common website risks, including:</p>
+            <ul>
+              <li>HTTPS on the production deployment.</li>
+              <li>A Content Security Policy that restricts scripts, styles, images, framing, and form submissions.</li>
+              <li>Headers that disable framing and restrict browser permissions.</li>
+              <li>Output escaping and normalization for displayed and exported user-controlled text.</li>
+              <li>No third-party scripts, ad networks, or remote fonts.</li>
+            </ul>
+            <p>
+              No website, device, or storage method can be guaranteed perfectly secure. Users are responsible for protecting their devices, browser profiles, and downloaded reports.
+            </p>
+          </section>
+
+          <section id="children">
+            <h2>9. Children's privacy</h2>
+            <p>
+              SecureStart is designed for organizations and the people responsible for their security practices. It is not directed to children under 13 and does not knowingly request personal information from children. A school or youth organization should have an authorized adult complete the assessment and should use an organization label rather than a child's name.
+            </p>
+          </section>
+
+          <section id="compliance">
+            <h2>10. Legal and regulatory limits</h2>
+            <p>
+              This policy describes the app's actual data behavior. It does not claim that using SecureStart automatically satisfies GDPR, CCPA, HIPAA, FERPA, PCI DSS, or any other law, regulation, contract, or industry standard. Organizations are responsible for determining which requirements apply to them and for obtaining professional advice when needed.
+            </p>
+          </section>
+
+          <section id="changes">
+            <h2>11. Policy changes and contact</h2>
+            <p>
+              If SecureStart's data practices change, this page will be updated with a new effective date before the changed feature is released. Material changes should be described clearly rather than hidden in unrelated updates.
+            </p>
+            <p>
+              General project or policy questions can be submitted through the <a href="https://github.com/SreehanAdigopula/SecureStart/issues" rel="external noreferrer">SecureStart GitHub Issues page</a>. GitHub Issues are public. Do not post passwords, private assessment answers, personal contact details, security incident details, or other sensitive information there.
+            </p>
+          </section>
+        </article>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div><strong>SecureStart</strong><span>Local-first by design.</span></div>
+      <nav class="footer-links" aria-label="Trust and policy links">
+        <a href="index.html">Home</a>
+        <a href="methodology.html">How scoring works</a>
+        <a href="https://github.com/SreehanAdigopula/SecureStart" rel="external noreferrer">GitHub</a>
+      </nav>
+    </footer>
+  </body>
+</html>

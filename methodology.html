@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="See exactly how SecureStart calculates its Readiness Gap Score, what sources support the questions, and what the result can and cannot tell you."
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'none'"
+    />
+    <title>How Scoring Works | SecureStart</title>
+    <link rel="icon" href="assets/securestart-logo.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="assets/securestart-logo.svg" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-noise" aria-hidden="true"></div>
+    <div class="scanlines" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="SecureStart home">
+        <img class="brand-mark" src="assets/securestart-logo.svg" alt="" aria-hidden="true" />
+        <span>SecureStart</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#assessment">Assessment</a>
+        <a href="methodology.html" aria-current="page">Scoring</a>
+        <a href="privacy.html">Privacy</a>
+      </nav>
+      <a class="button button-small" href="index.html#assessment">Start Assessment</a>
+    </header>
+
+    <main class="policy-main">
+      <section class="policy-hero" aria-labelledby="pageTitle">
+        <div>
+          <p class="eyebrow">Transparent by design</p>
+          <h1 id="pageTitle">How scoring works</h1>
+          <p>
+            SecureStart turns self-reported security habits into a simple readiness gap score. This page shows the full method, evidence base, and limits.
+          </p>
+          <div class="policy-meta">
+            <span>Scoring model 2.0</span>
+            <span>Reviewed September 22, 2026</span>
+          </div>
+        </div>
+        <aside class="policy-summary">
+          <strong>The important part</strong>
+          <p>
+            A higher score means more reported gaps. The score is an educational prioritization tool, not a breach prediction, certification, compliance grade, or professional audit.
+          </p>
+        </aside>
+      </section>
+
+      <div class="policy-layout">
+        <nav class="policy-nav" aria-label="Scoring page sections">
+          <a href="#measure">What it measures</a>
+          <a href="#formula">The formula</a>
+          <a href="#bands">Score bands</a>
+          <a href="#example">Worked example</a>
+          <a href="#profile">Profile effects</a>
+          <a href="#sources">Sources by area</a>
+          <a href="#limits">Limits</a>
+        </nav>
+
+        <article class="policy-content">
+          <section id="measure">
+            <h2>What the score measures</h2>
+            <p>
+              The assessment checks six areas: account security, access control, data protection, devices and updates, website and domain safety, and incident readiness. The questions focus on baseline practices that small organizations can understand and act on.
+            </p>
+            <p>
+              SecureStart measures reported readiness gaps. It does not measure every technical control, inspect real settings, or calculate the probability or financial impact of a cyber incident.
+            </p>
+          </section>
+
+          <section id="formula">
+            <h2>The formula</h2>
+            <h3>1. Answer points</h3>
+            <ul>
+              <li><strong>0 points:</strong> the practice is in place.</li>
+              <li><strong>1 point:</strong> the practice is mostly or partly in place.</li>
+              <li><strong>2 points:</strong> the practice is inconsistent or the user is not sure.</li>
+              <li><strong>3 points:</strong> the practice is absent or creates a clear gap.</li>
+            </ul>
+
+            <h3>2. Category scores</h3>
+            <p>Each category is normalized so categories with more questions do not automatically control the result.</p>
+            <div class="formula-block" role="img" aria-label="Category score equals category gap points divided by maximum possible category points, multiplied by 100">
+              Category score = (category gap points / category maximum points) x 100
+            </div>
+
+            <h3>3. Overall score</h3>
+            <p>The applicable category scores are averaged equally and rounded to the nearest whole number.</p>
+            <div class="formula-block" role="img" aria-label="Overall score equals the sum of applicable category scores divided by the number of applicable categories">
+              Overall score = sum of applicable category scores / number of applicable categories
+            </div>
+            <p>
+              Website and domain safety is excluded when the profile says the organization has no website. No other profile answer secretly changes a category's numeric weight.
+            </p>
+          </section>
+
+          <section id="bands">
+            <h2>Score bands</h2>
+            <table>
+              <thead>
+                <tr><th scope="col">Score</th><th scope="col">Band</th><th scope="col">Meaning</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>0 to 24</td><td>Low gaps</td><td>Few baseline gaps were reported. Continue routine reviews and maintenance.</td></tr>
+                <tr><td>25 to 49</td><td>Moderate gaps</td><td>Several preventable gaps need attention and a practical improvement plan.</td></tr>
+                <tr><td>50 to 74</td><td>High gaps</td><td>Major gaps could make prevention, response, or recovery difficult.</td></tr>
+                <tr><td>75 to 100</td><td>Urgent gaps</td><td>Widespread gaps call for prompt action, starting with accounts, updates, backups, and recovery.</td></tr>
+              </tbody>
+            </table>
+            <p class="policy-callout">
+              These bands are a SecureStart heuristic for prioritizing basic work. NIST, CISA, FTC, and OWASP do not publish or endorse these numeric cutoffs.
+            </p>
+          </section>
+
+          <section id="example">
+            <h2>Worked example</h2>
+            <p>Suppose an organization reports these category results:</p>
+            <ul>
+              <li>Account Security: 3 of 11 gap points = 27</li>
+              <li>Access Control: 3 of 9 gap points = 33</li>
+              <li>Data Protection: 4 of 12 gap points = 33</li>
+              <li>Devices and Updates: 3 of 9 gap points = 33</li>
+              <li>Website and Domain Safety: 2 of 9 gap points = 22</li>
+              <li>Incident Readiness: 5 of 9 gap points = 56</li>
+            </ul>
+            <div class="formula-block">(27 + 33 + 33 + 33 + 22 + 56) / 6 = 34</div>
+            <p>The final score is 34, which falls in the Moderate gaps band.</p>
+          </section>
+
+          <section id="profile">
+            <h2>What profile information affects</h2>
+            <ul>
+              <li><strong>Website status:</strong> decides whether website and domain questions are included.</li>
+              <li><strong>Data handling:</strong> adds context and may prioritize a data-handling recommendation.</li>
+              <li><strong>Organization size:</strong> may prioritize access-review guidance for larger groups.</li>
+              <li><strong>Organization type and label:</strong> appear in the report but do not alter the score.</li>
+            </ul>
+            <p>Profile details can personalize explanations and recommendations. They do not add hidden numeric multipliers.</p>
+          </section>
+
+          <section id="sources">
+            <h2>Sources by assessment area</h2>
+            <p>
+              The cited sources support the security practices being checked. They do not validate SecureStart's numeric formula or score bands.
+            </p>
+            <table>
+              <thead>
+                <tr><th scope="col">Area</th><th scope="col">Practices checked</th><th scope="col">Primary guidance</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Account Security</td>
+                  <td>MFA, unique accounts, password managers, and avoiding password reuse</td>
+                  <td><a href="https://www.cisa.gov/secure-our-world" rel="external noreferrer">CISA Secure Our World</a> and <a href="https://www.cisa.gov/audiences/small-and-medium-businesses/secure-your-business/require-multifactor-authentication" rel="external noreferrer">CISA MFA guidance</a></td>
+                </tr>
+                <tr>
+                  <td>Access Control</td>
+                  <td>Admin inventory, removing old access, and least privilege</td>
+                  <td><a href="https://www.nist.gov/publications/nist-cybersecurity-framework-20-small-business-quick-start-guide" rel="external noreferrer">NIST CSF 2.0 Small Business Quick-Start Guide</a></td>
+                </tr>
+                <tr>
+                  <td>Data Protection</td>
+                  <td>Data minimization, storage awareness, backups, and need-to-know access</td>
+                  <td><a href="https://www.ftc.gov/business-guidance/small-businesses/cybersecurity" rel="external noreferrer">FTC Cybersecurity for Small Business</a> and the NIST guide above</td>
+                </tr>
+                <tr>
+                  <td>Devices and Updates</td>
+                  <td>Automatic updates, device locks, and phishing reporting</td>
+                  <td><a href="https://www.cisa.gov/secure-our-world" rel="external noreferrer">CISA Secure Our World</a> and <a href="https://www.ftc.gov/business-guidance/small-businesses/cybersecurity" rel="external noreferrer">FTC small-business guidance</a></td>
+                </tr>
+                <tr>
+                  <td>Website and Domain Safety</td>
+                  <td>Domain ownership, HTTPS, and authorized website editors</td>
+                  <td><a href="https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Security_Cheat_Sheet.html" rel="external noreferrer">OWASP Transport Layer Security Cheat Sheet</a> and the NIST guide above</td>
+                </tr>
+                <tr>
+                  <td>Incident Readiness</td>
+                  <td>Response planning, account recovery, backup codes, and authorized recovery roles</td>
+                  <td><a href="https://www.nist.gov/publications/nist-cybersecurity-framework-20-small-business-quick-start-guide" rel="external noreferrer">NIST CSF 2.0 Small Business Quick-Start Guide</a> and <a href="https://www.ftc.gov/business-guidance/small-businesses/cybersecurity" rel="external noreferrer">FTC small-business guidance</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section id="limits">
+            <h2>Limits and responsible use</h2>
+            <ul>
+              <li>Results depend on the accuracy of the user's answers.</li>
+              <li>SecureStart does not inspect devices, accounts, websites, networks, files, or security settings.</li>
+              <li>A low score does not guarantee that an organization is secure or will avoid an incident.</li>
+              <li>A high score does not prove that a breach has occurred.</li>
+              <li>The assessment is not a legal, regulatory, insurance, or contractual compliance determination.</li>
+              <li>Organizations with sensitive systems, regulated data, or active incidents should seek qualified professional help.</li>
+            </ul>
+          </section>
+        </article>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div><strong>SecureStart</strong><span>Transparent scoring for a practical first step.</span></div>
+      <nav class="footer-links" aria-label="Trust and policy links">
+        <a href="index.html">Home</a>
+        <a href="privacy.html">Privacy &amp; data use</a>
+        <a href="https://github.com/SreehanAdigopula/SecureStart" rel="external noreferrer">GitHub</a>
+      </nav>
+    </footer>
+  </body>
+</html>

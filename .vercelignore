@@ -1,8 +1,10 @@
 .DS_Store
 .git/
+.vercel/
 .agents/
 .codex/
 .codex_tmp_*/
+.env*
 node_modules/
 npm-debug.log*
 yarn-debug.log*

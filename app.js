@@ -83,12 +83,12 @@ const categories = [
     name: "Data Protection",
     questions: [
       {
-        id: "dataStored",
-        text: "Do you store member, customer, or payment-related information?",
+        id: "dataRetention",
+        text: "Do you keep only the personal or payment data you need and have a plan for deleting it?",
         answers: [
-          ["No", 0],
-          ["Yes, with a clear plan", 1],
-          ["Yes, without a plan", 3],
+          ["Yes", 0],
+          ["Mostly", 1],
+          ["No", 3],
           ["Not sure", 2]
         ]
       },
@@ -125,6 +125,41 @@ const categories = [
     ]
   },
   {
+    name: "Devices and Updates",
+    questions: [
+      {
+        id: "automaticUpdates",
+        text: "Are operating systems, browsers, and important apps set to update automatically?",
+        answers: [
+          ["Yes, on all work devices", 0],
+          ["On some devices", 1],
+          ["No", 3],
+          ["Not sure", 2]
+        ]
+      },
+      {
+        id: "deviceLocks",
+        text: "Are work devices protected with screen locks and strong sign-in methods?",
+        answers: [
+          ["Yes, on all work devices", 0],
+          ["On most devices", 1],
+          ["No", 3],
+          ["Not sure", 2]
+        ]
+      },
+      {
+        id: "phishingReporting",
+        text: "Do people know how to recognize and report suspicious messages?",
+        answers: [
+          ["Yes, with guidance or practice", 0],
+          ["Some people do", 1],
+          ["No", 3],
+          ["Not sure", 2]
+        ]
+      }
+    ]
+  },
+  {
     name: "Website and Domain Safety",
     questions: [
       {
@@ -134,7 +169,7 @@ const categories = [
           ["Yes", 0],
           ["Maybe", 1],
           ["No", 3],
-          ["No website", 0]
+          ["Not sure", 2]
         ]
       },
       {
@@ -144,7 +179,7 @@ const categories = [
           ["Yes", 0],
           ["No", 3],
           ["Not sure", 2],
-          ["No website", 0]
+          ["It is being set up", 1]
         ]
       },
       {
@@ -154,7 +189,7 @@ const categories = [
           ["Yes", 0],
           ["Mostly", 1],
           ["No", 3],
-          ["No website", 0]
+          ["Not sure", 2]
         ]
       }
     ]
@@ -174,7 +209,7 @@ const categories = [
       },
       {
         id: "recoveryOptions",
-        text: "Do key accounts have recovery emails or phone numbers set up?",
+        text: "Do key accounts have current recovery methods and securely stored backup codes?",
         answers: [
           ["Yes", 0],
           ["Some accounts", 1],
@@ -184,10 +219,10 @@ const categories = [
       },
       {
         id: "trustedRecovery",
-        text: "Do multiple trusted people know how to recover key accounts?",
+        text: "Can at least two authorized people follow a documented recovery process for key accounts?",
         answers: [
           ["Yes", 0],
-          ["One person does", 2],
+          ["Only one person can", 2],
           ["No", 3],
           ["Not sure", 2]
         ]
@@ -230,7 +265,7 @@ const recommendationBank = [
     relatedCategory: "Access Control"
   },
   {
-    match: ["dataStored", "dataLocation", "sensitiveFiles"],
+    match: ["dataRetention", "dataLocation", "sensitiveFiles"],
     title: "Map where sensitive data lives",
     explanation: "Write down what data you store, where it sits, and who can open it.",
     priority: "High",
@@ -244,6 +279,30 @@ const recommendationBank = [
     priority: "Medium",
     difficulty: "Easy",
     relatedCategory: "Data Protection"
+  },
+  {
+    match: ["automaticUpdates"],
+    title: "Turn on automatic updates",
+    explanation: "Enable automatic updates for operating systems, browsers, and important apps so known security fixes arrive quickly.",
+    priority: "High",
+    difficulty: "Easy",
+    relatedCategory: "Devices and Updates"
+  },
+  {
+    match: ["deviceLocks"],
+    title: "Protect every work device",
+    explanation: "Use screen locks and strong device sign-in methods so a lost or unattended device does not expose organization data.",
+    priority: "High",
+    difficulty: "Easy",
+    relatedCategory: "Devices and Updates"
+  },
+  {
+    match: ["phishingReporting"],
+    title: "Create a suspicious-message routine",
+    explanation: "Show people how to pause, verify unusual requests, and report suspicious messages to an authorized contact.",
+    priority: "High",
+    difficulty: "Easy",
+    relatedCategory: "Devices and Updates"
   },
   {
     match: ["domainOwner", "https"],
@@ -264,13 +323,14 @@ const recommendationBank = [
 ];
 
 const riskLevels = [
-  { label: "Low", max: 20 },
-  { label: "Moderate", max: 45 },
-  { label: "High", max: 70 },
-  { label: "Critical", max: 100 }
+  { label: "Low", max: 24 },
+  { label: "Moderate", max: 49 },
+  { label: "High", max: 74 },
+  { label: "Urgent", max: 100 }
 ];
-const allowedRiskLevels = new Set(riskLevels.map((level) => level.label));
+const allowedRiskLevels = new Set([...riskLevels.map((level) => level.label), "Critical"]);
 const categoryNames = new Set(categories.map((category) => category.name));
+const currentScoringVersion = "2.0";
 
 const resourceLibrary = {
   twoFactor: {
@@ -280,18 +340,18 @@ const resourceLibrary = {
       <ol>
         <li>Start with the main email account. It usually controls password resets for everything else.</li>
         <li>Turn on an authenticator app or security key where possible.</li>
-        <li>Save backup codes somewhere the organization can still reach after leadership changes.</li>
+        <li>Store backup codes securely so authorized people can recover access after leadership changes.</li>
         <li>Repeat for website hosting, domain registrar, shared drives, payment tools, and social media.</li>
-        <li>Document which trusted people can recover each account.</li>
+        <li>Document the recovery process without recording passwords in the guide.</li>
       </ol>
     `,
     markdown: `# SecureStart 2FA Setup Guide
 
 1. Start with the main email account.
 2. Turn on an authenticator app or security key where possible.
-3. Save backup codes somewhere the organization can reach after leadership changes.
+3. Store backup codes securely so authorized people can recover access after leadership changes.
 4. Repeat for website hosting, domain registrar, shared drives, payment tools, and social media.
-5. Document which trusted people can recover each account.
+5. Document the recovery process without recording passwords in the guide.
 `
   },
   accessTracker: {
@@ -325,7 +385,7 @@ const resourceLibrary = {
         <li>List the files or records the organization cannot afford to lose.</li>
         <li>Choose a storage location separate from the everyday working folder.</li>
         <li>Decide who checks the backup and how often.</li>
-        <li>Open a sample backup file once per month to confirm it works.</li>
+        <li>Test a sample restore on a schedule that matches how quickly the organization needs to recover.</li>
         <li>Remove old access from backup folders when people leave.</li>
       </ol>
     `,
@@ -376,7 +436,8 @@ const state = {
   profile: null,
   answers: [],
   result: null,
-  activeResource: null
+  activeResource: null,
+  resourceOpener: null
 };
 
 const storageKey = "securestart-assessments";
@@ -393,13 +454,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function bindEvents() {
-  const hasWebsiteRadios = document.querySelectorAll('input[name="hasWebsite"]');
-  hasWebsiteRadios.forEach((radio) => {
-    radio.addEventListener("change", () => {
-      document.querySelector("#websiteField").classList.toggle("hidden", radio.value !== "yes" || !radio.checked);
-    });
-  });
-
   document.querySelector("#profileForm").addEventListener("submit", (event) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
@@ -408,9 +462,9 @@ function bindEvents() {
       type: form.get("orgType"),
       size: form.get("orgSize"),
       hasWebsite: form.get("hasWebsite") === "yes",
-      websiteUrl: form.get("websiteUrl").trim(),
       handlesSensitiveData: form.get("handlesData") === "yes"
     };
+    renderQuestions();
     showStep("checklist");
   });
 
@@ -420,7 +474,7 @@ function bindEvents() {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     const answers = collectAnswers(form);
-    const totalQuestions = categories.flatMap((category) => category.questions).length;
+    const totalQuestions = getApplicableCategories(state.profile).flatMap((category) => category.questions).length;
 
     if (answers.length !== totalQuestions) {
       alert("Please answer every checklist question before viewing results.");
@@ -464,6 +518,12 @@ function bindEvents() {
   document.querySelector("#resourceModal").addEventListener("click", (event) => {
     if (event.target.id === "resourceModal") closeResource();
   });
+  document.addEventListener("keydown", (event) => {
+    const modal = document.querySelector("#resourceModal");
+    if (modal.classList.contains("hidden")) return;
+    if (event.key === "Escape") closeResource();
+    if (event.key === "Tab") trapModalFocus(event, modal);
+  });
 }
 
 function showStep(stepName) {
@@ -476,11 +536,32 @@ function showStep(stepName) {
   });
 
   document.querySelector("#assessment").scrollIntoView({ behavior: "smooth", block: "start" });
+  const heading = steps[stepName].querySelector("h3");
+  if (heading) {
+    heading.setAttribute("tabindex", "-1");
+    heading.focus({ preventScroll: true });
+  }
+}
+
+function trapModalFocus(event, modal) {
+  const focusable = [...modal.querySelectorAll("button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex='-1'])")]
+    .filter((element) => !element.hidden);
+  if (!focusable.length) return;
+
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
 }
 
 function renderQuestions() {
   const container = document.querySelector("#questionGroups");
-  container.innerHTML = categories
+  container.innerHTML = getApplicableCategories(state.profile)
     .map((category) => {
       const questions = category.questions
         .map((question) => {
@@ -489,7 +570,7 @@ function renderQuestions() {
               return `
                 <label>
                   <input type="radio" name="${question.id}" value="${points}" data-label="${escapeHtml(label)}" required />
-                  <span>${label}</span>
+                  <span>${escapeHtml(label)}</span>
                 </label>
               `;
             })
@@ -497,7 +578,7 @@ function renderQuestions() {
 
           return `
             <div class="question-card">
-              <div class="question-title">${question.text}</div>
+              <div class="question-title">${escapeHtml(question.text)}</div>
               <div class="answer-row">${answers}</div>
             </div>
           `;
@@ -505,8 +586,8 @@ function renderQuestions() {
         .join("");
 
       return `
-        <section class="question-category" aria-label="${category.name}">
-          <h4>${category.name}</h4>
+        <section class="question-category" aria-label="${escapeHtml(category.name)}">
+          <h4>${escapeHtml(category.name)}</h4>
           ${questions}
         </section>
       `;
@@ -514,8 +595,12 @@ function renderQuestions() {
     .join("");
 }
 
+function getApplicableCategories(profile) {
+  return categories.filter((category) => isCategoryApplicable(category.name, profile));
+}
+
 function collectAnswers(form) {
-  return categories.flatMap((category) => {
+  return getApplicableCategories(state.profile).flatMap((category) => {
     return category.questions
       .map((question) => {
         const value = form.get(question.id);
@@ -537,18 +622,21 @@ function buildResult() {
   const rawRiskPoints = state.answers.reduce((sum, answer) => sum + answer.riskPoints, 0);
   const categoryDetails = buildCategoryDetails(state.answers, state.profile);
   const categoryScores = Object.fromEntries(
-    Object.entries(categoryDetails).map(([category, detail]) => [category, detail.score])
+    Object.entries(categoryDetails)
+      .filter(([, detail]) => detail.applicable)
+      .map(([category, detail]) => [category, detail.score])
   );
   const activeDetails = Object.values(categoryDetails).filter((detail) => detail.applicable);
-  const weightedTotal = activeDetails.reduce((sum, detail) => sum + detail.score * detail.weight, 0);
-  const totalWeight = activeDetails.reduce((sum, detail) => sum + detail.weight, 0);
-  const totalScore = totalWeight ? Math.round(weightedTotal / totalWeight) : 0;
+  const totalScore = activeDetails.length
+    ? Math.round(activeDetails.reduce((sum, detail) => sum + detail.score, 0) / activeDetails.length)
+    : 0;
   const riskLevel = getRiskLevel(totalScore);
   const recommendations = getRecommendations(state.answers, state.profile, categoryScores);
   const profileInsights = getProfileInsights(state.profile, categoryScores);
 
   return {
     id: typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+    scoringVersion: currentScoringVersion,
     organization: state.profile,
     answers: state.answers,
     rawRiskPoints,
@@ -559,7 +647,7 @@ function buildResult() {
     recommendations,
     profileInsights,
     scoringSummary:
-      "Each risk area is scored from 0 to 100 first, then the active areas are averaged. Website risk is skipped when an organization has no website. Data and access receive slightly more weight when the profile makes those risks more important.",
+      "Each applicable readiness area is scored from 0 to 100, then the areas are averaged equally. A higher score means more reported gaps. Website questions are excluded when the organization has no website.",
     createdAt: new Date().toISOString()
   };
 }
@@ -570,10 +658,11 @@ function getRiskLevel(score) {
 
 function getRiskExplanation(level) {
   const explanations = {
-    Low: "Your basics look healthy. Keep reviewing access and recovery details when people change roles.",
-    Moderate: "You have a workable base, but a few preventable risks could create trouble during a busy week.",
-    High: "Several habits could make account recovery, data protection, or admin control difficult after an incident.",
-    Critical: "Your organization should fix the highest-risk basics soon, especially account protection and recovery planning."
+    Low: "Your reported basics show relatively few gaps. Keep reviewing access, updates, backups, and recovery details.",
+    Moderate: "Your answers show several gaps worth addressing before they create avoidable problems.",
+    High: "Your answers show major gaps that could make prevention, response, or recovery difficult.",
+    Urgent: "Your answers show widespread gaps. Start with account protection, updates, backups, and recovery planning.",
+    Critical: "This is a legacy v1 result. Retake the assessment to use the current readiness gap method."
   };
   return explanations[level];
 }
@@ -586,14 +675,12 @@ function buildCategoryDetails(answers, profile) {
       return sum + Math.max(...question.answers.map((answer) => answer[1]));
     }, 0);
     const applicable = isCategoryApplicable(category.name, profile);
-    const weight = getCategoryWeight(category.name, profile);
 
     details[category.name] = {
       raw,
       max,
       score: max ? Math.round((raw / max) * 100) : 0,
-      applicable,
-      weight
+      applicable
     };
     return details;
   }, {});
@@ -604,33 +691,25 @@ function isCategoryApplicable(categoryName, profile) {
   return true;
 }
 
-function getCategoryWeight(categoryName, profile) {
-  if (!profile) return 1;
-  if (categoryName === "Data Protection" && profile.handlesSensitiveData) return 1.25;
-  if (categoryName === "Access Control" && ["51-100", "100+"].includes(profile.size)) return 1.15;
-  if (categoryName === "Website and Domain Safety" && profile.hasWebsite) return 1.1;
-  return 1;
-}
-
 function getProfileInsights(profile, categoryScores) {
   const insights = [];
 
   if (!profile) return insights;
 
   if (profile.handlesSensitiveData) {
-    insights.push("Because this organization handles customer or member data, data access and backup habits receive extra attention.");
+    insights.push("This organization reports handling customer or member data, so the recommendations emphasize data minimization, access, and backups.");
   } else {
-    insights.push("Because this organization does not report handling customer or member data, SecureStart focuses more on account access and recovery basics.");
+    insights.push("This organization does not report handling customer or member data. The numeric score still treats every applicable area equally.");
   }
 
   if (profile.hasWebsite) {
-    insights.push("Website ownership is included because the profile says this organization has a website.");
+    insights.push("Website and domain questions are included because this organization reports having a website.");
   } else {
-    insights.push("Website risk is not included in the overall score because the profile says this organization has no website.");
+    insights.push("Website and domain safety is not included in the overall score because this organization reports having no website.");
   }
 
-  if (["51-100", "100+"].includes(profile.size) && categoryScores["Access Control"] >= 25) {
-    insights.push("Larger groups tend to change roles more often, so access review matters more for this profile.");
+  if (["51-100", "100+"].includes(profile.size)) {
+    insights.push("For this larger group, SecureStart highlights regular access reviews without changing the numeric score.");
   }
 
   return insights;
@@ -706,6 +785,8 @@ function renderResults(result) {
   const content = document.querySelector("#resultsContent");
   const safeLevel = safeRiskLevel(result.riskLevel);
   const riskClass = `risk-${safeLevel.toLowerCase()}`;
+  const isCurrent = result.scoringVersion === currentScoringVersion;
+  const scoreLabel = isCurrent ? `${safeLevel} gaps` : `${safeLevel} risk`;
   const categoryDetails = result.categoryDetails || {};
   const categoryTiles = Object.entries(result.categoryScores || {})
     .map(([category, score]) => {
@@ -713,7 +794,7 @@ function renderResults(result) {
       const safeCategory = escapeHtml(category);
       const safeScore = safeNumber(score);
       const detailText = detail
-        ? `${safeNumber(detail.raw)}/${safeNumber(detail.max)} raw points${detail.applicable ? "" : " | not counted"}`
+        ? `${safeNumber(detail.raw)}/${safeNumber(detail.max)} gap points${detail.applicable ? "" : " | not counted"}`
         : "legacy saved score";
       return `
         <div class="category-tile">
@@ -751,7 +832,7 @@ function renderResults(result) {
           <span class="tag">Maintenance</span>
         </div>
         <h4>No urgent fixes found</h4>
-        <p>Your answers did not trigger a high-risk recommendation. Recheck access, backups, and recovery details whenever people change roles.</p>
+        <p>Your answers did not trigger a higher-gap recommendation. Recheck access, updates, backups, and recovery details whenever people change roles.</p>
       </article>
     `;
 
@@ -760,15 +841,17 @@ function renderResults(result) {
       <div class="score-orb">
         <div>
           <strong>${safeNumber(result.totalScore)}</strong>
-          <span>/100 normalized risk</span>
+          <span>/100 readiness gaps</span>
         </div>
       </div>
       <div class="terminal-card">
         <div class="terminal-bar" aria-hidden="true"><span></span><span></span><span></span></div>
-        <span class="risk-label ${riskClass}">${safeLevel} Risk</span>
+        <span class="risk-label ${riskClass}">${escapeHtml(scoreLabel)}</span>
         <h4>${escapeHtml(organization.name)}</h4>
         <p>${getRiskExplanation(safeLevel)}</p>
-        <p class="score-method">${escapeHtml(result.scoringSummary || "This saved report uses the earlier raw-point scoring model.")}</p>
+        <p class="score-method">${escapeHtml(result.scoringSummary || "This is a legacy v1 report. Its original score is preserved and has not been recalculated.")}</p>
+        <a class="text-link" href="methodology.html">How this score works</a>
+        ${isCurrent ? "" : '<a class="text-link" href="#assessment">Retake with scoring version 2.0</a>'}
       </div>
     </div>
     <div class="profile-insights">
@@ -808,12 +891,12 @@ function normalizeAssessment(item) {
 
   return {
     id: safeText(item.id || String(Date.now())),
+    scoringVersion: item.scoringVersion === currentScoringVersion ? currentScoringVersion : "1.0",
     organization: {
       name: safeText(organization.name || "Saved organization"),
       type: safeText(organization.type || "Unknown"),
       size: safeText(organization.size || "Unknown"),
       hasWebsite: Boolean(organization.hasWebsite),
-      websiteUrl: safeText(organization.websiteUrl || ""),
       handlesSensitiveData: Boolean(organization.handlesSensitiveData)
     },
     answers: Array.isArray(item.answers) ? item.answers.map(normalizeAnswer).filter(Boolean) : [],
@@ -852,7 +935,7 @@ function normalizeCategoryDetails(details) {
       max: safeNumber(detail.max),
       score: safeNumber(detail.score),
       applicable: Boolean(detail.applicable),
-      weight: Number.isFinite(Number(detail.weight)) ? Math.max(0, Math.min(Number(detail.weight), 5)) : 1
+      legacyWeight: Number.isFinite(Number(detail.weight)) ? Math.max(0, Math.min(Number(detail.weight), 5)) : 1
     };
   });
 
@@ -904,11 +987,13 @@ function renderSavedAssessments() {
         day: "numeric"
       });
       const safeLevel = safeRiskLevel(item.riskLevel);
+      const isCurrent = item.scoringVersion === currentScoringVersion;
+      const label = isCurrent ? `${safeLevel} gaps` : `Legacy v1 | ${safeLevel} risk`;
       return `
         <article class="saved-card">
-          <span class="risk-label risk-${safeLevel.toLowerCase()}">${safeLevel} Risk</span>
+          <span class="risk-label risk-${safeLevel.toLowerCase()}">${escapeHtml(label)}</span>
           <h3>${escapeHtml(item.organization.name)}</h3>
-          <p>${date} | ${safeNumber(item.totalScore)}/100 normalized risk</p>
+          <p>${date} | ${safeNumber(item.totalScore)}/100 ${isCurrent ? "readiness gaps" : "legacy score"}</p>
           <button class="button button-secondary button-small" type="button" data-open-report="${escapeHtml(item.id)}">Open Report</button>
         </article>
       `;
@@ -933,6 +1018,7 @@ function openResource(resourceId) {
   if (!resource) return;
 
   state.activeResource = resourceId;
+  state.resourceOpener = document.activeElement;
   document.querySelector("#resourceTitle").textContent = resource.title;
   document.querySelector("#resourceBody").innerHTML = resource.html;
   document.querySelector("#resourceModal").classList.remove("hidden");
@@ -942,6 +1028,10 @@ function openResource(resourceId) {
 function closeResource() {
   document.querySelector("#resourceModal").classList.add("hidden");
   state.activeResource = null;
+  if (state.resourceOpener && typeof state.resourceOpener.focus === "function") {
+    state.resourceOpener.focus();
+  }
+  state.resourceOpener = null;
 }
 
 function downloadActiveResource() {
@@ -964,6 +1054,7 @@ function downloadReport(result) {
     .join("\n");
   const profileLines = (result.profileInsights || []).map((insight) => `- ${safeMarkdownText(insight)}`).join("\n");
 
+  const isCurrent = result.scoringVersion === currentScoringVersion;
   const report = `# SecureStart Report
 
 Organization: ${safeMarkdownText(organization.name || "Organization")}
@@ -972,12 +1063,13 @@ People: ${safeMarkdownText(organization.size || "Unknown")}
 Website included: ${organization.hasWebsite ? "Yes" : "No"}
 Handles customer or member data: ${organization.handlesSensitiveData ? "Yes" : "No"}
 Date: ${new Date(result.createdAt).toLocaleDateString()}
+Scoring version: ${safeMarkdownText(result.scoringVersion || "1.0 (legacy)")}
 
-Risk score: ${safeNumber(result.totalScore)}/100 normalized risk
-Raw checklist points: ${safeNumber(result.rawRiskPoints)}
-Risk level: ${safeRiskLevel(result.riskLevel)}
+${isCurrent ? "Readiness gap score" : "Legacy risk score"}: ${safeNumber(result.totalScore)}/100
+Raw checklist gap points: ${safeNumber(result.rawRiskPoints)}
+${isCurrent ? "Gap band" : "Legacy risk level"}: ${safeRiskLevel(result.riskLevel)}
 
-Scoring note: ${safeMarkdownText(result.scoringSummary || "This saved report uses the earlier raw-point scoring model.")}
+Scoring note: ${safeMarkdownText(result.scoringSummary || "This is a legacy v1 report. Its original score is preserved and has not been recalculated.")}
 
 ## Profile Context
 ${profileLines || "- No profile-specific notes."}
@@ -987,6 +1079,12 @@ ${categoryLines}
 
 ## Recommended Next Steps
 ${recommendationLines || "- No urgent fixes were triggered by this assessment."}
+
+## Learn More
+- Scoring method: https://securestart-lemon.vercel.app/methodology
+- Privacy and data use: https://securestart-lemon.vercel.app/privacy
+
+SecureStart is a self-reported educational readiness check. It does not scan devices or accounts, predict a breach, certify compliance, or replace a professional cybersecurity audit.
 `;
 
   downloadText(`${slugify(organization.name)}-securestart-report.md`, report);
@@ -1013,7 +1111,12 @@ function safeText(value) {
 }
 
 function safeMarkdownText(value) {
-  return safeText(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+  return safeText(value)
+    .replaceAll("\\", "\\\\")
+    .replace(/[!"#$%'()*+,\-./:;=?@\[\]^_`{|}~]/g, "\\$&")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
 }
 
 function safeNumber(value) {
