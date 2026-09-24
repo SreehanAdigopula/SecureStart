@@ -36,7 +36,7 @@
     <main id="home">
       <section class="hero">
         <div class="hero-copy">
-          <p class="eyebrow">Small org security console</p>
+          <p class="eyebrow">Friends beta · Educational self-assessment</p>
           <h1 class="glitch" data-text="Know Your Gaps">Know Your Gaps</h1>
           <p class="hero-text">
             A practical cybersecurity readiness check for clubs, nonprofits, and local teams.
@@ -124,7 +124,7 @@
         <div class="section-heading">
           <h2>Run the assessment.</h2>
           <p>
-            Answer short questions, get a score, then export a basic report your team can act on.
+            Answer short questions, get an educational gap score, then export a basic report. This does not scan your systems or certify security.
           </p>
         </div>
 
@@ -208,6 +208,7 @@
             <section class="workflow-step" id="resultsStep" aria-labelledby="resultsTitle">
               <p class="terminal-line">&gt; report.compile()</p>
               <h3 id="resultsTitle">Results dashboard</h3>
+              <p id="storageStatus" role="status" aria-live="polite"></p>
               <div id="resultsContent" class="results-content"></div>
               <div class="form-actions">
                 <button class="button button-secondary" type="button" id="retakeButton">Retake</button>
@@ -215,6 +216,13 @@
               </div>
             </section>
           </div>
+        </div>
+      </section>
+
+      <section class="resources-section" id="beta-feedback">
+        <div class="section-heading">
+          <h2>Help improve the beta.</h2>
+          <p>Tell the person who shared SecureStart with you: How easy was it to use (1–5)? How useful were the next steps (1–5)? What was confusing or broken? No rating is submitted through this app. Share general feedback, not private answers or reports.</p>
         </div>
       </section>
 
@@ -281,6 +289,6 @@
       </nav>
     </footer>
 
-    <script src="app.js"></script>
+    <script src="app.js?v=20260923-beta1"></script>
   </body>
 </html>

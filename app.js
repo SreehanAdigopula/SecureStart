@@ -233,7 +233,19 @@ const categories = [
 
 const recommendationBank = [
   {
-    match: ["twoFactor", "recoveryOptions"],
+    match: ["https"],
+    title: "Enable and verify HTTPS",
+    explanation: "Ask your hosting provider to enable HTTPS with a valid certificate and redirect HTTP to HTTPS. Check every public page before collecting any information.",
+    priority: "High", difficulty: "Medium", relatedCategory: "Website and Domain Safety"
+  },
+  {
+    match: ["recoveryOptions"],
+    title: "Update account recovery methods",
+    explanation: "Check recovery contacts and securely store backup codes where authorized people can access them. Follow each provider's recovery process without sharing passwords.",
+    priority: "High", difficulty: "Easy", relatedCategory: "Incident Readiness"
+  },
+  {
+    match: ["twoFactor"],
     title: "Enable two-factor authentication",
     explanation: "Start with email, website, file storage, and payment accounts because those unlock everything else.",
     priority: "High",
@@ -258,8 +270,8 @@ const recommendationBank = [
   },
   {
     match: ["adminList", "removeAccess", "leastPrivilege", "websiteEditors"],
-    title: "Create an access owner list",
-    explanation: "Keep a simple list of admins and review it after elections, staff changes, or volunteer turnover.",
+    title: "Review and remove unnecessary access",
+    explanation: "List account owners, remove access promptly when people leave, and reduce admin permissions to what each person needs.",
     priority: "High",
     difficulty: "Easy",
     relatedCategory: "Access Control"
@@ -267,7 +279,7 @@ const recommendationBank = [
   {
     match: ["dataRetention", "dataLocation", "sensitiveFiles"],
     title: "Map where sensitive data lives",
-    explanation: "Write down what data you store, where it sits, and who can open it.",
+    explanation: "List what data you store, where it sits, and who can open it. Keep only what you need and define when and how to delete it.",
     priority: "High",
     difficulty: "Medium",
     relatedCategory: "Data Protection"
@@ -305,7 +317,7 @@ const recommendationBank = [
     relatedCategory: "Devices and Updates"
   },
   {
-    match: ["domainOwner", "https"],
+    match: ["domainOwner"],
     title: "Document website ownership",
     explanation: "Know who controls the domain, hosting, website editor, and billing so the site does not get stranded.",
     priority: "Medium",
@@ -483,10 +495,13 @@ function bindEvents() {
 
     state.answers = answers;
     state.result = buildResult();
-    saveAssessment(state.result);
+    const saved = saveAssessment(state.result);
     renderResults(state.result);
     renderSavedAssessments();
     showStep("results");
+    document.querySelector("#storageStatus").textContent = saved
+      ? "Report saved in this browser."
+      : "This browser could not save your report. You can still view and download it before leaving this page.";
   });
 
   document.querySelector("#retakeButton").addEventListener("click", () => {
@@ -504,8 +519,21 @@ function bindEvents() {
     if (!getSavedAssessments().length) return;
     const confirmed = confirm("Clear saved SecureStart reports from this browser?");
     if (!confirmed) return;
-    localStorage.removeItem(storageKey);
+    try {
+      localStorage.removeItem(storageKey);
+    } catch {
+      alert("History could not be cleared. Use your browser's site-data settings to remove saved reports.");
+      return;
+    }
+    state.profile = null;
+    state.answers = [];
+    state.result = null;
+    document.querySelector("#profileForm").reset();
+    document.querySelector("#checklistForm").reset();
+    document.querySelector("#resultsContent").textContent = "";
+    document.querySelector("#storageStatus").textContent = "";
     renderSavedAssessments();
+    showStep("profile");
   });
 
   document.querySelectorAll("[data-resource]").forEach((button) => {
@@ -716,18 +744,17 @@ function getProfileInsights(profile, categoryScores) {
 }
 
 function getRecommendations(answers, profile, categoryScores) {
-  const riskyIds = answers.filter((answer) => answer.riskPoints >= 2).map((answer) => answer.questionId);
+  const gaps = answers.filter((answer) => answer.riskPoints > 0 && isCategoryApplicable(answer.category, profile));
   const riskTriggered = recommendationBank
     .map((recommendation) => {
-      const hits = recommendation.match.filter((id) => riskyIds.includes(id)).length;
-      return { ...recommendation, hits };
+      const matches = gaps.filter((answer) => recommendation.match.includes(answer.questionId));
+      return { ...recommendation, severity: Math.max(0, ...matches.map((answer) => answer.riskPoints)), hits: matches.length };
     })
     .filter((recommendation) => recommendation.hits > 0)
-    .sort((a, b) => b.hits - a.hits || priorityRank(a.priority) - priorityRank(b.priority))
-    .map(({ hits, ...recommendation }) => recommendation);
+    .sort((a, b) => b.severity - a.severity || priorityRank(a.priority) - priorityRank(b.priority) || b.hits - a.hits)
+    .map(({ severity, hits, ...recommendation }) => recommendation);
 
-  const profileTriggered = getProfileRecommendations(profile, categoryScores);
-  return dedupeRecommendations([...riskTriggered, ...profileTriggered]).slice(0, 5);
+  return dedupeRecommendations([...riskTriggered, ...getProfileRecommendations(profile, categoryScores)]).slice(0, 5);
 }
 
 function getProfileRecommendations(profile, categoryScores) {
@@ -831,8 +858,8 @@ function renderResults(result) {
         <div class="tag-row">
           <span class="tag">Maintenance</span>
         </div>
-        <h4>No urgent fixes found</h4>
-        <p>Your answers did not trigger a higher-gap recommendation. Recheck access, updates, backups, and recovery details whenever people change roles.</p>
+        <h4>No checklist gaps reported</h4>
+        <p>Your answers did not trigger a recommendation in this checklist; this does not verify your actual security settings. Recheck access, updates, backups, and recovery details whenever people change roles.</p>
       </article>
     `;
 
@@ -854,6 +881,7 @@ function renderResults(result) {
         ${isCurrent ? "" : '<a class="text-link" href="#assessment">Retake with scoring version 2.0</a>'}
       </div>
     </div>
+    <p class="policy-callout">Educational self-assessment only. A low score can still include an important missing protection. This is not a security audit, breach prediction, or compliance certification. Review the individual gaps below.</p>
     <div class="profile-insights">
       <h4>Profile context</h4>
       <ul>${profileInsights}</ul>
@@ -866,14 +894,19 @@ function renderResults(result) {
 function saveAssessment(result) {
   const existing = getSavedAssessments();
   const next = [result, ...existing].slice(0, 8);
-  localStorage.setItem(storageKey, JSON.stringify(next));
+  try {
+    localStorage.setItem(storageKey, JSON.stringify(next));
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 function getSavedAssessments() {
   try {
     const parsed = JSON.parse(localStorage.getItem(storageKey)) || [];
     if (!Array.isArray(parsed)) return [];
-    return parsed.map(normalizeAssessment).filter(Boolean);
+    return parsed.slice(0, 8).map(normalizeAssessment).filter(Boolean);
   } catch {
     return [];
   }
@@ -1007,6 +1040,7 @@ function renderSavedAssessments() {
       state.profile = report.organization;
       state.answers = report.answers;
       state.result = report;
+      document.querySelector("#storageStatus").textContent = "Saved report; recommendations reflect the time it was created.";
       renderResults(report);
       showStep("results");
     });
@@ -1078,6 +1112,7 @@ ${profileLines || "- No profile-specific notes."}
 ${categoryLines}
 
 ## Recommended Next Steps
+These are up to five suggested starting actions, not a complete remediation plan. A low overall score can still include an important missing protection.
 ${recommendationLines || "- No urgent fixes were triggered by this assessment."}
 
 ## Learn More

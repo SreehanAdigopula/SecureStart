@@ -43,7 +43,7 @@
           </p>
           <div class="policy-meta">
             <span>Scoring model 2.0</span>
-            <span>Reviewed September 22, 2026</span>
+            <span>Reviewed September 23, 2026</span>
           </div>
         </div>
         <aside class="policy-summary">
@@ -86,8 +86,9 @@
               <li><strong>3 points:</strong> the practice is absent or creates a clear gap.</li>
             </ul>
 
+            <p>The password-manager question has a maximum of 2 points: not using one is a gap, but does not by itself prove passwords are reused. All other questions have a maximum of 3. The two-person recovery question is intended for teams; a solo operator may reasonably score a continuity gap.</p>
             <h3>2. Category scores</h3>
-            <p>Each category is normalized so categories with more questions do not automatically control the result.</p>
+            <p>Each category is normalized and rounded to the nearest whole number before averaging, so categories with more questions do not automatically control the result.</p>
             <div class="formula-block" role="img" aria-label="Category score equals category gap points divided by maximum possible category points, multiplied by 100">
               Category score = (category gap points / category maximum points) x 100
             </div>
@@ -182,6 +183,8 @@
 
           <section id="limits">
             <h2>Limits and responsible use</h2>
+            <p>This is a selected baseline checklist, not a complete NIST CSF, CIS Controls, SOC 2, or ISO 27001 assessment, and not a grading rubric validated by major companies. It omits important areas such as security monitoring, supplier risk, secure software development, and encryption verification. For broader planning, consult <a href="https://www.nist.gov/cyberframework" rel="external noreferrer">NIST CSF 2.0</a> and <a href="https://www.cisecurity.org/controls/implementation-groups/ig1" rel="external noreferrer">CIS Implementation Group 1</a>. These references do not endorse SecureStart.</p>
+            <p>Every nonzero answer can trigger advice, including partial implementation. Up to five actions are shown, ordered by the largest matched answer gap, then the action's priority and number of matched answers. Profile guidance is appended if space remains. This is a starting list, not a complete plan; retake after improvements. A low average can hide an important individual gap.</p>
             <ul>
               <li>Results depend on the accuracy of the user's answers.</li>
               <li>SecureStart does not inspect devices, accounts, websites, networks, files, or security settings.</li>
