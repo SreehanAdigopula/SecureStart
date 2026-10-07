@@ -36,6 +36,64 @@ test('every isolated partial or absent practice produces relevant advice', () =>
   assert.equal(run(`getRecommendations([{questionId:'https',category:'Website and Domain Safety',riskPoints:3}],{hasWebsite:true},{})[0].title`),'Enable and verify HTTPS');
   assert.equal(run(`getRecommendations([{questionId:'recoveryOptions',category:'Incident Readiness',riskPoints:3}],{hasWebsite:true},{})[0].title`),'Update account recovery methods');
 });
+test('a missing MFA practice remains visible despite a low overall score', () => {
+  const { run, nodes } = app();
+  const score = run(`
+    state.profile = {name:'Fictional Club',hasWebsite:false,handlesSensitiveData:false};
+    state.answers = getApplicableCategories(state.profile).flatMap(c => c.questions.map(q => ({questionId:q.id,category:c.name,riskPoints:q.id==='twoFactor'?3:0})));
+    state.result = buildResult();
+    renderResults(state.result);
+    state.result.totalScore;
+  `);
+  assert.equal(score, 5);
+  assert.ok(nodes.get('#resultsContent').innerHTML.includes('Important reported gaps'));
+  assert.ok(nodes.get('#resultsContent').innerHTML.includes('Two-factor authentication is missing'));
+  assert.equal(run('getRecommendations(state.answers,state.profile,state.result.categoryScores)[0].title'), 'Enable two-factor authentication');
+});
+test('unknown answers count as gaps and inapplicable website answers stay excluded', () => {
+  const { run } = app();
+  assert.equal(run(`
+    state.profile = {hasWebsite:false};
+    state.answers = categories.flatMap(c => c.questions.map(q => ({questionId:q.id,category:c.name,riskPoints:2})));
+    const result = buildResult();
+    [result.totalScore,result.riskLevel,Object.hasOwn(result.categoryScores,'Website and Domain Safety')].join(',');
+  `), '68,High,false');
+});
+test('profile edits retain draft answers, including temporarily hidden website answers', () => {
+  const { run, nodes } = app();
+  const container = {
+    inputs: [],
+    set innerHTML(markup) {
+      this.inputs = [...markup.matchAll(/name="([^"]+)" value="([^"]+)"/g)]
+        .map(([, name, value]) => ({ name, value, checked: false }));
+    },
+    querySelectorAll(selector) {
+      return selector.endsWith(':checked') ? this.inputs.filter(input => input.checked) : this.inputs;
+    }
+  };
+  nodes.set('#questionGroups', container);
+  const selected = (name, value) => container.inputs.find(input => input.name === name && input.value === value);
+  run('state.profile={hasWebsite:true}; renderQuestions()');
+  selected('twoFactor', '3').checked = true;
+  selected('https', '3').checked = true;
+  run('state.profile={hasWebsite:false}; renderQuestions()');
+  assert.equal(selected('twoFactor', '3').checked, true);
+  assert.equal(selected('https', '3'), undefined);
+  run('state.profile={hasWebsite:true}; renderQuestions()');
+  assert.equal(selected('https', '3').checked, true);
+});
+test('downloaded report includes the score method and prominent individual gap', () => {
+  const { run } = app();
+  assert.equal(run(`
+    state.profile = {name:'Fictional Club',hasWebsite:false,handlesSensitiveData:false};
+    state.answers = getApplicableCategories(state.profile).flatMap(c => c.questions.map(q => ({questionId:q.id,category:c.name,riskPoints:q.id==='twoFactor'?3:0})));
+    state.result = buildResult();
+    let captured;
+    downloadText = (name, text) => { captured = {name, text}; };
+    downloadReport(state.result);
+    [captured.name,captured.text.includes('Readiness gap score: 5/100'),captured.text.includes('Important Reported Gaps'),captured.text.includes('Two\\\\-factor authentication is missing')].join(',');
+  `), 'fictional-club-securestart-report.md,true,true,true');
+});
 test('blocked storage is recoverable and malformed saved data is tolerated', () => {
   assert.equal(app({setItem(){throw Error('QuotaExceeded');}}).run('saveAssessment({})'),false);
   assert.equal(app({getItem(){throw Error('SecurityError');}}).run('getSavedAssessments().length'),0);

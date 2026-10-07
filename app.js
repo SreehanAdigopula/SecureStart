@@ -164,7 +164,7 @@ const categories = [
     questions: [
       {
         id: "domainOwner",
-        text: "Do you know who owns or manages your domain name?",
+        text: "Do you know who registered or manages your domain name?",
         answers: [
           ["Yes", 0],
           ["Maybe", 1],
@@ -318,7 +318,7 @@ const recommendationBank = [
   },
   {
     match: ["domainOwner"],
-    title: "Document website ownership",
+    title: "Document domain and website access",
     explanation: "Know who controls the domain, hosting, website editor, and billing so the site does not get stranded.",
     priority: "Medium",
     difficulty: "Medium",
@@ -343,6 +343,12 @@ const riskLevels = [
 const allowedRiskLevels = new Set([...riskLevels.map((level) => level.label), "Critical"]);
 const categoryNames = new Set(categories.map((category) => category.name));
 const currentScoringVersion = "2.0";
+const highImpactPractices = new Map([
+  ["twoFactor", "Two-factor authentication is missing from important accounts."],
+  ["backups", "Important files do not have a tested backup."],
+  ["automaticUpdates", "Automatic updates are not enabled on work devices."],
+  ["recoveryOptions", "Key accounts lack current recovery methods and backup codes."]
+]);
 
 const resourceLibrary = {
   twoFactor: {
@@ -449,7 +455,8 @@ const state = {
   answers: [],
   result: null,
   activeResource: null,
-  resourceOpener: null
+  resourceOpener: null,
+  draftAnswers: new Map()
 };
 
 const storageKey = "securestart-assessments";
@@ -469,8 +476,15 @@ function bindEvents() {
   document.querySelector("#profileForm").addEventListener("submit", (event) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
+    const nameInput = document.querySelector("#orgName");
+    const name = String(form.get("orgName") || "").trim();
+    nameInput.setCustomValidity(name ? "" : "Enter an organization name or label.");
+    if (!name) {
+      nameInput.reportValidity();
+      return;
+    }
     state.profile = {
-      name: form.get("orgName").trim(),
+      name,
       type: form.get("orgType"),
       size: form.get("orgSize"),
       hasWebsite: form.get("hasWebsite") === "yes",
@@ -481,6 +495,7 @@ function bindEvents() {
   });
 
   document.querySelector("#backToProfile").addEventListener("click", () => showStep("profile"));
+  document.querySelector("#orgName").addEventListener("input", (event) => event.currentTarget.setCustomValidity(""));
 
   document.querySelector("#checklistForm").addEventListener("submit", (event) => {
     event.preventDefault();
@@ -507,6 +522,7 @@ function bindEvents() {
   document.querySelector("#retakeButton").addEventListener("click", () => {
     state.answers = [];
     state.result = null;
+    state.draftAnswers.clear();
     document.querySelector("#checklistForm").reset();
     showStep("profile");
   });
@@ -528,6 +544,7 @@ function bindEvents() {
     state.profile = null;
     state.answers = [];
     state.result = null;
+    state.draftAnswers.clear();
     document.querySelector("#profileForm").reset();
     document.querySelector("#checklistForm").reset();
     document.querySelector("#resultsContent").textContent = "";
@@ -589,6 +606,9 @@ function trapModalFocus(event, modal) {
 
 function renderQuestions() {
   const container = document.querySelector("#questionGroups");
+  container.querySelectorAll('input[type="radio"]:checked').forEach((input) => {
+    state.draftAnswers.set(input.name, input.value);
+  });
   container.innerHTML = getApplicableCategories(state.profile)
     .map((category) => {
       const questions = category.questions
@@ -605,10 +625,10 @@ function renderQuestions() {
             .join("");
 
           return `
-            <div class="question-card">
-              <div class="question-title">${escapeHtml(question.text)}</div>
+            <fieldset class="question-card">
+              <legend class="question-title">${escapeHtml(question.text)}</legend>
               <div class="answer-row">${answers}</div>
-            </div>
+            </fieldset>
           `;
         })
         .join("");
@@ -621,6 +641,10 @@ function renderQuestions() {
       `;
     })
     .join("");
+
+  container.querySelectorAll('input[type="radio"]').forEach((input) => {
+    input.checked = state.draftAnswers.get(input.name) === input.value;
+  });
 }
 
 function getApplicableCategories(profile) {
@@ -807,12 +831,27 @@ function priorityRank(priority) {
   return { High: 0, Medium: 1, Low: 2 }[priority] ?? 3;
 }
 
+function getHighImpactGaps(answers, profile) {
+  if (!Array.isArray(answers)) return [];
+  return answers
+    .filter((answer) => answer.riskPoints >= 3 && highImpactPractices.has(answer.questionId) && isCategoryApplicable(answer.category, profile))
+    .map((answer) => highImpactPractices.get(answer.questionId));
+}
+
 function renderResults(result) {
   const organization = result.organization || { name: "Organization" };
   const content = document.querySelector("#resultsContent");
   const safeLevel = safeRiskLevel(result.riskLevel);
   const riskClass = `risk-${safeLevel.toLowerCase()}`;
   const isCurrent = result.scoringVersion === currentScoringVersion;
+  const highImpactGaps = isCurrent ? getHighImpactGaps(result.answers, result.organization) : [];
+  const highImpactCallout = highImpactGaps.length
+    ? `<section class="policy-callout high-impact-gaps" aria-label="Important reported gaps">
+        <h4>Important reported gaps</h4>
+        <p>These individual gaps deserve attention even if the overall score is low.</p>
+        <ul>${highImpactGaps.map((gap) => `<li>${escapeHtml(gap)}</li>`).join("")}</ul>
+      </section>`
+    : "";
   const scoreLabel = isCurrent ? `${safeLevel} gaps` : `${safeLevel} risk`;
   const categoryDetails = result.categoryDetails || {};
   const categoryTiles = Object.entries(result.categoryScores || {})
@@ -881,6 +920,7 @@ function renderResults(result) {
         ${isCurrent ? "" : '<a class="text-link" href="#assessment">Retake with scoring version 2.0</a>'}
       </div>
     </div>
+    ${highImpactCallout}
     <p class="policy-callout">Educational self-assessment only. A low score can still include an important missing protection. This is not a security audit, breach prediction, or compliance certification. Review the individual gaps below.</p>
     <div class="profile-insights">
       <h4>Profile context</h4>
@@ -1089,6 +1129,7 @@ function downloadReport(result) {
   const profileLines = (result.profileInsights || []).map((insight) => `- ${safeMarkdownText(insight)}`).join("\n");
 
   const isCurrent = result.scoringVersion === currentScoringVersion;
+  const highImpactGaps = isCurrent ? getHighImpactGaps(result.answers, result.organization) : [];
   const report = `# SecureStart Report
 
 Organization: ${safeMarkdownText(organization.name || "Organization")}
@@ -1115,6 +1156,9 @@ ${categoryLines}
 These are up to five suggested starting actions, not a complete remediation plan. A low overall score can still include an important missing protection.
 ${recommendationLines || "- No urgent fixes were triggered by this assessment."}
 
+## Important Reported Gaps
+${highImpactGaps.length ? highImpactGaps.map((gap) => `- ${safeMarkdownText(gap)}`).join("\n") : "- None of the highlighted high-impact checklist gaps were reported. This does not verify actual security settings."}
+
 ## Learn More
 - Scoring method: https://securestart-lemon.vercel.app/methodology
 - Privacy and data use: https://securestart-lemon.vercel.app/privacy
@@ -1134,7 +1178,8 @@ function downloadText(filename, text) {
   document.body.appendChild(link);
   link.click();
   link.remove();
-  URL.revokeObjectURL(url);
+  // Let the browser start reading the Blob before releasing its URL.
+  window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
 }
 
 function slugify(value) {

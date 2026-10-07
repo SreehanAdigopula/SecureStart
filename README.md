@@ -11,7 +11,7 @@ Small clubs, nonprofits, student organizations, and local businesses often depen
 - Reused passwords
 - Missing two-factor authentication
 - Shared admin logins
-- Unclear website or domain ownership
+- Unclear control of the website or domain
 - Weak backup habits
 - No plan for recovering hacked accounts
 
